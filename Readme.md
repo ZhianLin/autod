@@ -17,14 +17,14 @@
 
 Auto generate dependencies and devDependencies by parse the project file.
 `autod` will parse all the js files in `path`, and get the latest dependencies version from [registry.npmjs.org](https://registry.npmjs.org) or other registries by `-r`.
-
-## install
+一个自动分析项目所有的文件，获取所有的项目依赖和它们的版本的工具。通过这个工具，我们可以很轻松的跟踪到所有依赖的最新版本，同时可以自动更新我们的 package.json 文件，新引入的模块也不需要手动去更新 package.json 文件了。
+## install（必须全局安装）
 
 ```bash
 $ npm install -g autod
 ```
 
-## usage
+## usage（使用方式）
 
 ```bash
 $ bin/autod -h
@@ -35,24 +35,27 @@ $ bin/autod -h
 
     -h, --help                                           output usage information
     -V, --version                                        output the version number
-    -p, --path [root path]                               the root path to be parse
+    -p, --path [root path]                               the root path to be parse.
     -t, --test <test/benchmark/example directory paths>  modules in these paths will be tread as devDependencies
-    -e, --exclude <exclude directory path>               exclude parse directory, split by `,`
-    -r, --registry <remote registry>                     get latest version from which registry
+    -e, --exclude <exclude directory path>               exclude parse directory, split by `,`.排除不需要分析的目录。
+    -r, --registry <remote registry>                     get latest version from which registry.设置模块的resource。
     -f, --prefix [version prefix]                        version prefix, can be `~` or `^`
     -F, --devprefix [dev dependencies version prefix]    develop dependencies version prefix, can be `~` or `^`
     -w, --write                                          write dependencies into package.json
-    -i, --ignore                                         ignore errors, display the dependencies or write the dependencies.
-    -m, --map                                            display all the dependencies require by which file
-    -d, --dep <dependently modules>                      modules that not require in source file, but you need them as dependencies
+    -i, --ignore                                         ignore errors, display the dependencies or write the dependencies.忽略错误。
+    -m, --map                                            display all the dependencies require by which file.按文件列出依赖的包，当依赖结果的map大于500Kb时该命令会报错。
+    -d, --dep <dependently modules>                      modules that not require in source file, but you need them as dependencies.把不是依赖的包手动加入到依赖列表中。
     -D, --devdep <dev dependently modules>               modules that not require in source file, but you need them in as devDependencies
-    -k, --keep <dependently modules>                     modules that you want to keep version in package.json file
+    -k, --keep <dependently modules>                     modules that you want to keep version in package.json file.指定某个模块不更新版本号。
     -s, --semver <dependencies@version>                  auto update these modules within the specified semver
 ```
 
 * Autod will parse all the js files in `path`, and you can exclude folder by `-e, --exclude`.
+* Autod 会分析所有的 js 文件 in `path`, 你可以通过 `-e, --exclude`来把不想分析的目录排除。如assets、views、model。
 * All the modules in test folder (can be alter by `-t, --text`) will parsed as devDependencies.
+* `-t, --text` 指明的模块，将会作为开发环境依赖来分析。
 * If you set `-w, --write`, `autod` will write the dependencies into package.json file. `dependencies` will replace `dependencies` in package.json, and `devDependencies` will merge with `devDependencies` in package.json, then write into package file.
+* 当使用 `-w, --write`命令`autod` 会把生产环境依赖写入到`package.json file`。 分析出来的`dependencies` 会替换package.json原有的 `dependencies` , 同时把 `devDependencies` 合并到 package.json。
 * `-f, --prefix` will add prefix to each dependencies' version.
 * `-F, --devprefix` will add prefix to each dev dependencies' version.
 * `-i, --ignore` will display or wrtie the dependencies even some error happened.
@@ -68,9 +71,10 @@ a simple example of autod:
 autod -w --prefix="~" -d connect -D mocha,should -k express -s connect@2
 ```
 
-## Maintains your dependencies in Makefile
+## Maintains your dependencies in Makefile（集成到项目的Makefile中）
 
-add a command in your Makefile
+add a command in your Makefile  
+在Makefile文件中添加以下的命令
 
 ```sh
 autod:
@@ -81,17 +85,19 @@ autod:
 
 then run `make autod`, it will find all the dependencies and devDependencies in your project,
 add / remove dependencies, and bump the versions.
+然后执行命令 `make autod`,`dependencies `和 `devDependencies`会构建到项目中。
 
 check out some examples:
+可以查看下面这两个示例中的使用效果：
 
  - [cnpmjs.org](https://github.com/cnpm/cnpmjs.org/blob/master/Makefile#L95)
  - [koa-generic-session](https://github.com/koajs/generic-session/blob/master/Makefile#L40)
 
-## es6 modules support
+## es6 modules support（支持ES6模块）
 
 All files will compiled by `babel` with `babel-preset-react`, `babel-preset-es2015`, `babel-preset-stage-0`.
 
-## Plugin support
+## Plugin support（插件引入）
 
 You can write a plugin for autod to decide how to parse dependencies.
 
@@ -131,7 +137,7 @@ module.exports = {
 };
 ```
 
-## License
+## License（版权声明）
 
 (The MIT License)
 
