@@ -17,7 +17,8 @@
 
 Auto generate dependencies and devDependencies by parse the project file.
 `autod` will parse all the js files in `path`, and get the latest dependencies version from [registry.npmjs.org](https://registry.npmjs.org) or other registries by `-r`.   
-一个自动分析项目所有的文件，获取所有的项目依赖和它们的版本的工具。通过这个工具，我们可以很轻松的跟踪到所有依赖的最新版本，同时可以自动更新我们的 package.json 文件，新引入的模块也不需要手动去更新 package.json 文件了。
+一个自动分析项目所有的js文件，获取所有的项目依赖和它们的版本的工具。通过这个工具，我们可以很轻松的跟踪到所有依赖的最新版本，同时可以自动更新我们的 package.json 文件，新引入的模块也不需要手动去更新 package.json 文件了。
+`Auto`会把最新的依赖版本从[registry.npmjs.org](https://registry.npmjs.org) 下载，也可以自己用` -r `命令指定。
 ## install（必须全局安装）
 
 ```bash
