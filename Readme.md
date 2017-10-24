@@ -61,23 +61,23 @@ $ bin/autod -h
 * `-D --devdep` will add modules to devDependencies even not require by any file.
 * `-k --keep` will keep the modules' version in package.json not change by autod.
 * `-s, --semver` will update these modules within the specified semver.
-* `-n, --notransform` disable transfrom es next, don't support es6 modules.
+* `-n, --notransform` disable transfrom es next, don't support es6 modules.   
 
-* Autod 会分析所有的 js 文件 in `path`, 你可以通过 `-e, --exclude`来把不想分析的目录排除。如assets、views、model。
-* `-e --exclude` 指定要排除的目录，用逗号分隔多个目录。
-* 使用`-t, --text` 指明的模块，将会作为开发环境依赖来分析。
-* 当使用 `-w, --write`命令`autod` 会把生产环境依赖写入到`package.json file`。 分析出来的`dependencies` 会替换package.json原有的 `dependencies` , 同时把 `devDependencies` 合并到 package.json。
-* `-f, --prefix`会在dependencies的依赖包加上前缀'
-* `-F, --devprefix`会在dev-dependencies的依赖包加上前缀'
-* `-i, --ignore`忽略错误而继续执行。
-* `-m, --map ` 按文件列出依赖的包，当依赖结果的map大于500Kb时该命令会报错。
-* `-d --dep` 添加指定的包到dependencies中，即使这个包不在文件依赖中。
-* `-D --devdep` 添加指定的包到dev-dependencies中，即使这个包不在文件依赖中。
-* `-k --keep` 指定某个包保持对应版本号不变。
-* `-s, --semver` 按semver规则更新包的版本号,后面直接写对应的模块。
-* `-n, --notransform`禁用ES的next,不支持ES6模块。   
-* `-r, --registry <remote registry>` 指定模块版本的来源，如使用 http://r.npm.taobao.net
-* `-w, --write` 把依赖信息写入到`package.json`
+  * Autod 会分析所有的 js 文件 in `path`, 你可以通过 `-e, --exclude`来把不想分析的目录排除。如assets、views、model。
+  * `-e --exclude` 指定要排除的目录，用逗号分隔多个目录。
+  * 使用`-t, --text` 指明的模块，将会作为开发环境依赖来分析。
+  * 当使用 `-w, --write`命令`autod` 会把生产环境依赖写入到`package.json file`。 分析出来的`dependencies` 会替换package.json原有的 `dependencies` , 同时把 `devDependencies` 合并到 package.json。
+  * `-f, --prefix`会在dependencies的依赖包加上前缀'
+  * `-F, --devprefix`会在dev-dependencies的依赖包加上前缀'
+  * `-i, --ignore`忽略错误而继续执行。
+  * `-m, --map ` 按文件列出依赖的包，当依赖结果的map大于500Kb时该命令会报错。
+  * `-d --dep` 添加指定的包到dependencies中，即使这个包不在文件依赖中。
+  * `-D --devdep` 添加指定的包到dev-dependencies中，即使这个包不在文件依赖中。
+  * `-k --keep` 指定某个包保持对应版本号不变。
+  * `-s, --semver` 按semver规则更新包的版本号,后面直接写对应的模块。
+  * `-n, --notransform`禁用ES的next,不支持ES6模块。   
+  * `-r, --registry <remote registry>` 指定模块版本的来源，如使用 http://r.npm.taobao.net
+  * `-w, --write` 把依赖信息写入到`package.json`
 
 a simple example of autod:    
 ```
