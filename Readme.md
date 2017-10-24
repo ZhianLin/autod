@@ -19,14 +19,14 @@ Auto generate dependencies and devDependencies by parse the project file.
 `autod` will parse all the js files in `path`, and get the latest dependencies version from [registry.npmjs.org](https://registry.npmjs.org) or other registries by `-r`.   
 一个自动分析项目所有的js文件，获取所有的项目依赖和它们的版本的工具。通过这个工具，我们可以很轻松的跟踪到所有依赖的最新版本，同时可以自动更新我们的 package.json 文件，新引入的模块也不需要手动去更新 package.json 文件了。
 `Auto`会把最新的依赖版本从[registry.npmjs.org](https://registry.npmjs.org) 下载，也可以自己用` -r `命令指定。
-## install（必须全局安装）
-
+## install
+## 全局安装
 ```bash
 $ npm install -g autod
 ```
 
-## usage（使用方式）
-
+## usage
+## 使用方式与命令
 ```bash
 $ bin/autod -h
 
@@ -74,20 +74,24 @@ $ bin/autod -h
 * `-d --dep` 添加指定的包到dependencies中，即使这个包不在文件依赖中。
 * `-D --devdep` 添加指定的包到dev-dependencies中，即使这个包不在文件依赖中。
 * `-k --keep` 指定某个包保持对应版本号不变。
-* `-s, --semver` 按semver规则更新包的版本号。
+* `-s, --semver` 按semver规则更新包的版本号,后面直接写对应的模块。
 * `-n, --notransform`禁用ES的next,不支持ES6模块。   
 * `-r, --registry <remote registry>` 指定模块版本的来源，如使用 http://r.npm.taobao.net
 * `-w, --write` 把依赖信息写入到`package.json`
 
 a simple example of autod:    
-简单使用示例：   
 ```
 autod -w --prefix="~" -d connect -D mocha,should -k express -s connect@2
 ```
 
+简单使用示例：   
+```
+autod -w --prefix="~" -d connect -D mocha,should -k express -s connect@2
+```   
 ## Maintains your dependencies in Makefile
-## 集成到项目的Makefile中  
+
 add a command in your Makefile  
+## 集成到项目的Makefile中  
 在Makefile文件中添加以下的命令
 
 ```sh
@@ -99,21 +103,33 @@ autod:
 
 then run `make autod`, it will find all the dependencies and devDependencies in your project,
 add / remove dependencies, and bump the versions.   
+check out some examples:   
+ - [cnpmjs.org](https://github.com/cnpm/cnpmjs.org/blob/master/Makefile#L95)
+ - [koa-generic-session](https://github.com/koajs/generic-session/blob/master/Makefile#L40)
+## 集成到项目的Makefile中  
+在Makefile文件中添加以下的命令
+
+```sh
+autod:
+    @./node_modules/.bin/autod -w
+    @npm install
+
+```
 然后执行命令 `make autod`,`dependencies `和 `devDependencies`会构建到项目中。
 
-check out some examples:   
 可以查看下面这两个示例中的使用效果：
 
  - [cnpmjs.org](https://github.com/cnpm/cnpmjs.org/blob/master/Makefile#L95)
  - [koa-generic-session](https://github.com/koajs/generic-session/blob/master/Makefile#L40)
 
+
 ## es6 modules support  
+All files will compiled by `babel` with `babel-preset-react`, `babel-preset-es2015`, `babel-preset-stage-0`.   
+
 ## ES6模块支持
-All files will compiled by `babel` with `babel-preset-react`, `babel-preset-es2015`, `babel-preset-stage-0`.
 所有用`babel`编写的，会用 `babel-preset-react`, `babel-preset-es2015`, `babel-preset-stage-0`进行转化。
 
 ## Plugin support
-## 插件
 You can write a plugin for autod to decide how to parse dependencies.   
 - Write a plugin, and publish it to NPM.
 ```js
@@ -127,6 +143,7 @@ install plugin from NPM, then use it with `autod`:  
 ```
 autod -P pluginName
 ```
+## 插件
 你可以自己写一个插件来决定`autod` 怎样解析依赖。
 - 编写插件后发布到NPM上。
 ```js
@@ -143,8 +160,24 @@ autod -P 插件名称
 ```
 
 ## Config support
-## 配置模式
+
 You can put all the options in `${cwd}/.autod.conf.js`, when you run `autod`, it will load this file as input options. It can be both a `js` file or a `json` file.   
+
+```js
+module.exports = {
+  write: true,
+  prefix: '~',
+  devprefix: '^',
+  dep: [
+    'bluebird'
+  ],
+  semver: [
+    'koa-router@4',
+    'koa-compose@2'
+  ],
+};
+```
+## 配置模式
 你可以把所有的选项参数配置在文件 `${cwd}/.autod.conf.js`中，在项目中运行`autod`就会加载配置文件。配置文件可以是`js`  或 `json` 格式。
 
 ```js
